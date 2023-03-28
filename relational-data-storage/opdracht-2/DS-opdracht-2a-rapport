@@ -1,0 +1,12 @@
+Datakwaliteit MHL:
+Foreign keys ontbreken bij de volgende tabellen:
+Cities
+communes
+contacts
+detaildefs
+districts
+hitcount
+properties
+suppliers
+suppliers_rubriek_view
+yn_properties

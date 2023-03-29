@@ -10,3 +10,121 @@ properties
 suppliers
 suppliers_rubriek_view
 yn_properties
+
+Cities en Communes matchen niet >>
+
+SELECT * 
+FROM mhl_cities cit
+LEFT JOIN mhl_communes com 
+  ON com.id = cit.commune_ID
+WHERE com.id IS NULL
+
+Laat alle rijen van 'cities' zien waar geen match is in 'communes'
+
+Contacts en Suppliers matchen niet >>
+
+SELECT *
+FROM mhl_contacts con
+LEFT JOIN mhl_suppliers sup
+ON sup.id=con.supplier_ID
+WHERE sup.id IS NULL
+
+Laat alle rijen van 'contacts' zien waar geen match is in 'suppliers'
+
+Rubrieken.parent en rubrieken.id matchen niet
+
+SELECT *
+FROM mhl_rubrieken r1
+LEFT JOIN mhl_rubrieken r2
+ON r2.id=r1.parent
+WHERE r2.id IS NULL
+
+Laat alle rijen zien waar parent niet matched aan een id
+
+supplier rubriek en supplier matched niet
+
+SELECT *
+FROM mhl_suppliers_mhl_rubriek_view c
+LEFT JOIN mhl_suppliers p
+ON p.id=c.mhl_suppliers_ID
+WHERE p.id IS NULL
+
+supplier rubriek en rubriek matched niet
+
+SELECT *
+FROM mhl_suppliers_mhl_rubriek_view c
+LEFT JOIN mhl_rubrieken p
+ON p.id=c.mhl_rubriek_view_ID
+WHERE p.id IS NULL
+
+hitcount en suppliers matchen niet
+SELECT *
+FROM mhl_hitcount c
+LEFT JOIN mhl_suppliers p
+ON p.id=c.supplier_ID
+WHERE p.id IS NULL
+
+detaildefs en propetytype matchen niet
+SELECT *
+FROM mhl_detaildefs c
+LEFT JOIN mhl_propertytypes p
+ON p.id=c.propertytype_ID
+WHERE p.id IS NULL
+
+yn_properties en supplier matchen niet
+
+SELECT *
+FROM mhl_yn_properties c
+LEFT JOIN mhl_suppliers p
+ON p.id=c.supplier_ID
+WHERE p.id IS NULL
+
+yn_properties en mhl_propertytypes matchen niet
+
+SELECT *
+FROM mhl_yn_properties c
+LEFT JOIN mhl_propertytypes p
+ON p.id=c.propertytype_ID
+WHERE p.id IS NULL
+
+properties en suppliers matchen niet
+SELECT *
+FROM mhl_properties c
+LEFT JOIN mhl_suppliers p
+ON p.id=c.supplier_ID
+WHERE p.id IS NULL
+
+properties en mhl_propertytypes matchen niet
+SELECT *
+FROM mhl_properties c
+LEFT JOIN mhl_propertytypes p
+ON p.id=c.propertytype_ID
+WHERE p.id IS NULL
+
+suppliers en mhl_membertypes
+SELECT *
+FROM mhl_suppliers c
+LEFT JOIN mhl_membertypes p
+ON p.id=c.membertype
+WHERE p.id IS NULL
+
+suppliers en mhl_companies
+SELECT *
+FROM mhl_suppliers c
+LEFT JOIN mhl_companies p
+ON p.id=c.company
+WHERE p.id IS NULL
+
+suppliers en pc_lat_long
+SELECT *
+FROM mhl_suppliers c
+LEFT JOIN pc_lat_long p
+ON p.pc6=c.postcode
+WHERE p.pc6 IS NULL
+
+suppliers en cities
+SELECT *
+FROM mhl_suppliers c
+LEFT JOIN mhl_cities p
+ON p.id=c.city_ID
+WHERE p.id IS NULL

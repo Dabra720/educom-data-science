@@ -11,7 +11,7 @@ suppliers
 suppliers_rubriek_view
 yn_properties
 
-Cities en Communes matchen niet >>
+============================ Cities en Communes matchen niet >> ============================
 
 SELECT * 
 FROM mhl_cities cit
@@ -21,7 +21,27 @@ WHERE com.id IS NULL
 
 Laat alle rijen van 'cities' zien waar geen match is in 'communes'
 
-Contacts en Suppliers matchen niet >>
+99% van de null waardes komt door het Commune_ID wat op 0 staat.
+Om dit op te lossen zouden we van 0 > NULL kunnen maken.
+
+ALTER TABLE mhl_cities
+MODIFY COLUMN commune_ID INT
+
+Column is NULLABLE by default
+
+UPDATE mhl_cities SET commune_ID=NULL WHERE commune_ID=0
+Safe update mode staat aan >> Moet key column als where conditie
+
+Stad 'Bonheiden' > commune_ID=755 : Bestaat niet als commune
+Commune 'Bonheiden' > id=784
+
+UPDATE mhl_cities SET commune_ID=784 WHERE commune_ID=755
+
+Alleen null values hebben geen match.
+
+FOREIGN KEY CONSTRAINT toegevoegd!
+
+============================ Contacts en Suppliers matchen niet >> ============================
 
 SELECT *
 FROM mhl_contacts con
@@ -31,7 +51,17 @@ WHERE sup.id IS NULL
 
 Laat alle rijen van 'contacts' zien waar geen match is in 'suppliers'
 
-Rubrieken.parent en rubrieken.id matchen niet
+SELECT con.supplier_ID
+FROM mhl_contacts con
+LEFT JOIN mhl_suppliers sup
+ON sup.id=con.supplier_ID
+GROUP BY con.supplier_ID
+
+ID zonder match: 849, 2935, 3178, 3893, 4046, 6991, 7579, 7816, 8549, 8684, 8927, 9598, 9608
+
+CONTACTEN MET DEZE 'supplier_ID' VERWIJDEREN?
+
+=========================== Rubrieken.parent en rubrieken.id matchen niet ============================
 
 SELECT *
 FROM mhl_rubrieken r1
@@ -41,7 +71,23 @@ WHERE r2.id IS NULL
 
 Laat alle rijen zien waar parent niet matched aan een id
 
-supplier rubriek en supplier matched niet
+Ontbrekende ID: 0, 1395
+
+ID met parent=1395: 1441, 1442, 1443
+
+SELECT * FROM mhl_suppliers_mhl_rubriek_view r1
+WHERE mhl_rubriek_view_ID BETWEEN 1441 AND 1443
+
+SELECT * FROM mhl_rubrieken r1
+WHERE parent BETWEEN 1441 AND 1443
+
+2 bovenstaande querys geven 0 rows terug
+
+Keuze: De 3 rubrieken verwijderen || Parent op NULL en dus hoofdrubrieken ervan maken.
+
+
+
+=========================== supplier rubriek en supplier matched niet ===========================
 
 SELECT *
 FROM mhl_suppliers_mhl_rubriek_view c
@@ -49,7 +95,10 @@ LEFT JOIN mhl_suppliers p
 ON p.id=c.mhl_suppliers_ID
 WHERE p.id IS NULL
 
-supplier rubriek en rubriek matched niet
+Dit is een koppel tabel tussen supplier en rubrieken
+Alle rijen waarvan de supplier niet meer bestaat kunnen verwijderd worden.
+
+=========================== supplier rubriek en rubriek matched niet ===========================
 
 SELECT *
 FROM mhl_suppliers_mhl_rubriek_view c
@@ -57,21 +106,36 @@ LEFT JOIN mhl_rubrieken p
 ON p.id=c.mhl_rubriek_view_ID
 WHERE p.id IS NULL
 
-hitcount en suppliers matchen niet
+Dit is een koppel tabel tussen supplier en rubrieken
+Alle rijen waarvan de rubriek niet meer bestaat kunnen verwijderd worden.
+
+=========================== hitcount en suppliers matchen niet ===========================
 SELECT *
 FROM mhl_hitcount c
 LEFT JOIN mhl_suppliers p
 ON p.id=c.supplier_ID
 WHERE p.id IS NULL
 
-detaildefs en propetytype matchen niet
+Hitcounts zonder bestaande supplier kunnen verwijderd worden
+
+=========================== detaildefs en propetytype matchen niet ===========================
 SELECT *
 FROM mhl_detaildefs c
 LEFT JOIN mhl_propertytypes p
 ON p.id=c.propertytype_ID
 WHERE p.id IS NULL
 
-yn_properties en supplier matchen niet
+propertytype_ID=0 is de enige die niet matched
+
+ALTER TABLE mhl_detaildefs
+MODIFY COLUMN propertytype_ID INT
+
+Column is NULLABLE by default
+
+UPDATE mhl_detaildefs SET propertytype_ID=NULL WHERE propertytype_ID=0
+
+
+=========================== yn_properties en supplier matchen niet ===========================
 
 SELECT *
 FROM mhl_yn_properties c
@@ -79,7 +143,10 @@ LEFT JOIN mhl_suppliers p
 ON p.id=c.supplier_ID
 WHERE p.id IS NULL
 
-yn_properties en mhl_propertytypes matchen niet
+Dit is een koppel tabel tussen yn_properties en supplier
+Alle rijen waarvan de supplier niet meer bestaat kunnen verwijderd worden.
+
+=========================== yn_properties en mhl_propertytypes matchen niet ===========================
 
 SELECT *
 FROM mhl_yn_properties c
@@ -87,42 +154,63 @@ LEFT JOIN mhl_propertytypes p
 ON p.id=c.propertytype_ID
 WHERE p.id IS NULL
 
-properties en suppliers matchen niet
+propertytype_ID=0 is de enige die niet matched.
+
+ALTER TABLE mhl_yn_properties 
+MODIFY COLUMN propertytype_ID INT;
+
+Eerst NULLABLE maken met bovenstaande query ^
+
+UPDATE mhl_yn_properties SET propertytype_ID=NULL WHERE propertytype_ID=0
+
+=========================== properties en suppliers matchen niet =========================== 
 SELECT *
 FROM mhl_properties c
 LEFT JOIN mhl_suppliers p
 ON p.id=c.supplier_ID
 WHERE p.id IS NULL
 
-properties en mhl_propertytypes matchen niet
+Dit is een koppel tabel tussen properties en supplier
+Alle rijen waarvan de supplier niet meer bestaat kunnen verwijderd worden.
+
+=========================== properties en mhl_propertytypes matchen niet =========================== !!!! MOET NOG UITGEVOERD WORDEN !!!
 SELECT *
 FROM mhl_properties c
 LEFT JOIN mhl_propertytypes p
 ON p.id=c.propertytype_ID
 WHERE p.id IS NULL
 
-suppliers en mhl_membertypes
+propertytype_ID=0 is de enige die niet matched.
+
+ALTER TABLE mhl_properties 
+MODIFY COLUMN propertytype_ID INT;
+
+Eerst NULLABLE maken met bovenstaande query ^
+
+UPDATE mhl_properties SET propertytype_ID=NULL WHERE propertytype_ID=0
+
+=========================== suppliers en mhl_membertypes ===========================
 SELECT *
 FROM mhl_suppliers c
 LEFT JOIN mhl_membertypes p
 ON p.id=c.membertype
 WHERE p.id IS NULL
 
-suppliers en mhl_companies
+=========================== suppliers en mhl_companies ===========================
 SELECT *
 FROM mhl_suppliers c
 LEFT JOIN mhl_companies p
 ON p.id=c.company
 WHERE p.id IS NULL
 
-suppliers en pc_lat_long
+=========================== suppliers en pc_lat_long ===========================
 SELECT *
 FROM mhl_suppliers c
 LEFT JOIN pc_lat_long p
 ON p.pc6=c.postcode
 WHERE p.pc6 IS NULL
 
-suppliers en cities
+=========================== suppliers en cities ===========================
 SELECT *
 FROM mhl_suppliers c
 LEFT JOIN mhl_cities p

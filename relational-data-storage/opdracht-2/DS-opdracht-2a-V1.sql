@@ -5,8 +5,8 @@ DROP FOREIGN KEY FK_CountryID;
 ALTER TABLE mhl_communes
 DROP FOREIGN KEY FK_DistrictID;
 
--- ALTER TABLE mhl_cities
--- DROP FOREIGN KEY FK_CommuneID;
+ALTER TABLE mhl_cities
+DROP FOREIGN KEY FK_CommuneID;
 
 ALTER TABLE mhl_contacts
 DROP FOREIGN KEY FK_Department,
@@ -50,9 +50,9 @@ ALTER TABLE mhl_communes
 ADD CONSTRAINT FK_DistrictID
 FOREIGN KEY (district_ID) REFERENCES mhl_districts(id);
 
--- ALTER TABLE mhl_cities
--- ADD CONSTRAINT FK_CommuneID
--- FOREIGN KEY (commune_ID) REFERENCES mhl_communes(id); 
+ALTER TABLE mhl_cities
+ADD CONSTRAINT FK_CommuneID
+FOREIGN KEY (commune_ID) REFERENCES mhl_communes(id); 
 
 ALTER TABLE mhl_contacts
 ADD CONSTRAINT FK_Department

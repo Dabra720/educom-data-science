@@ -1,3 +1,4 @@
+--3.2.3 Selecteer naam, straat, huisnummer en postcode van alle leveranciers uit 'Amsterdam' met een postbus in een andere stad.
 SELECT sup.name, straat, huisnr, postcode FROM mhl_suppliers sup
 LEFT JOIN mhl_cities cit
 ON cit.id=sup.city_ID

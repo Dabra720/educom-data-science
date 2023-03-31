@@ -196,12 +196,26 @@ LEFT JOIN mhl_membertypes p
 ON p.id=c.membertype
 WHERE p.id IS NULL
 
+membertype=0 is de enige die niet matched.
+
+ALTER TABLE mhl_suppliers 
+MODIFY COLUMN membertype INT;
+
+Eerst NULLABLE maken met bovenstaande query ^
+
+UPDATE mhl_suppliers SET membertype=NULL WHERE membertype=0
 =========================== suppliers en mhl_companies ===========================
 SELECT *
 FROM mhl_suppliers c
 LEFT JOIN mhl_companies p
 ON p.id=c.company
 WHERE p.id IS NULL
+
+company=0 is de enige die niet matched
+
+company is al NULLABLE
+
+UPDATE mhl_suppliers SET company=NULL WHERE company=0
 
 =========================== suppliers en pc_lat_long ===========================
 SELECT *
@@ -210,9 +224,32 @@ LEFT JOIN pc_lat_long p
 ON p.pc6=c.postcode
 WHERE p.pc6 IS NULL
 
+1216 supplier waarvan de postcode niet bestaat in pc_lat_long
+
+SELECT * FROM mhl_suppliers
+WHERE postcode = '';
+
+705 daarvan hebben geen postcode
+
+SELECT * FROM pc_lat_long 
+WHERE pc6 NOT LIKE '______'
+
+35 postcodes zijn geen 6 characters lang, dus geen kloppende postcode
+
+Misschien geen FOREIGN KEY tussen suppliers en pc_lat_long ?
+
+
 =========================== suppliers en cities ===========================
 SELECT *
 FROM mhl_suppliers c
 LEFT JOIN mhl_cities p
 ON p.id=c.city_ID
 WHERE p.id IS NULL
+
+44 city_ID hebben geen match in mhl_cities
+
+4 verschillende ids zonder match: 0, 2157, 2352, 5860
+
+0 kan op NULL gezet worden.
+
+De andere 3 weet ik niet.

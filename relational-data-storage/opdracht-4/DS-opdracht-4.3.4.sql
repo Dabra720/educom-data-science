@@ -1,0 +1,1 @@
+--4.2.4 Selecteer alle mogelijke Y/N-properties van leveranciers uit Amsterdam, met indien aanwezig de waarde van de property voor deze leverancier en anders 'NOT SET'.

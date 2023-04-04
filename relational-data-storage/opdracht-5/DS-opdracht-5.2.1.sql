@@ -2,7 +2,7 @@
 --gesorteerd per provincie, plaatsnaam en naam: 
 --wanneer een postbusadres ingevuld dan dit gebruiken, anders vestigingsadres, 
 --wanneer contactpersoon aanwezig dan die naam in aanhef, anders 't.a.v. de directie'.
-SELECT S.name leverancier, IFNULL(CON.name, "t.a.v. de directie") aanhef, IF(sup.p_address<>"", sup.P_address, CONCAT(straat, " ", huisnr)) 
+SELECT sup.name leverancier, IFNULL(con.name, "t.a.v. de directie") aanhef, IF(sup.p_address<>"", sup.P_address, CONCAT(straat, " ", huisnr)) 
 adres, IF(sup.p_address<>"", sup.P_postcode, sup.postcode) postcode, IF(sup.p_address<>"", cit2.name, cit.name) stad,
 IF(sup.p_address<>"", dis2.name, dis.name) provincie
 FROM  mhl_suppliers sup

@@ -19,3 +19,10 @@ ON r1.parent=r2.id
 ORDER BY r1.name
 
 -- Krijg het nog niet voor elkaar
+
+-- V4.0
+SELECT r2.id, IFNULL(r1.name, r2.name) hoofdrubriek, IF(ISNULL(r1.name), '', r2.name) subrubriek
+FROM mhl_rubrieken r1
+RIGHT JOIN mhl_rubrieken r2
+ON r2.parent=r1.id
+ORDER BY hoofdrubriek, subrubriek

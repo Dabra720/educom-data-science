@@ -1,0 +1,4 @@
+--6.1.2 Selecteer alle Nederlandse gemeentes, de leveranciersnaam, 
+--de totale hitcount en de gemiddelde hitcount van de betreffende gemeente, 
+--van die leveranciers die een hogere hitcount hebben dan dat gemiddelde, 
+--gesorteerd op het verschil (totaal ten opzichte van gemiddelde) in aflopende volgorde.

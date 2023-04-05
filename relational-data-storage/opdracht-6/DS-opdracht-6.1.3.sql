@@ -2,7 +2,6 @@
 
 -- Beide select statements geven hetzelfde resultaat:
 
--- SELECT CONCAT_WS(" - ", r1.name, r2.name) name, N.numsup numsup
 SELECT IF(ISNULL(r1.name), r2.name, CONCAT_WS(" - ", r1.name, r2.name)) name, N.numsup
 FROM mhl_rubrieken r1
 RIGHT JOIN mhl_rubrieken r2
@@ -17,5 +16,3 @@ GROUP BY mhl_rubriek_view_ID
 ON N.id=r2.id
 ORDER BY name
 
-
--- numsup aantallen wijken iets af, ik weet niet of dit aan mijn query ligt of aan de database.

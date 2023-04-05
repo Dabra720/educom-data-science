@@ -25,3 +25,28 @@ GROUP BY gemeente
 ORDER BY gemeente
 
 -- DEZE IS IN PROGRESS..
+
+-- FINISHED PRODUCT:
+
+SELECT com.name gemeente, s.name leverancier, SUM(hitcount) total_hitcount, G.average average_hitcount
+FROM mhl_suppliers s
+LEFT JOIN mhl_cities cit 
+ON cit.id=s.city_ID
+LEFT JOIN mhl_communes com
+ON com.id=cit.commune_ID
+LEFT JOIN mhl_hitcount h
+ON h.supplier_ID=s.id
+INNER JOIN (
+SELECT com.id id, com.name gemeente, SUM(hitcount) total, AVG(hitcount) average
+FROM mhl_suppliers s
+LEFT JOIN mhl_hitcount h
+ON h.supplier_ID=s.id
+LEFT JOIN mhl_cities cit 
+ON cit.id=s.city_ID
+LEFT JOIN mhl_communes com
+ON com.id=cit.commune_ID
+GROUP BY gemeente
+) G
+ON G.id=com.id
+GROUP BY gemeente, leverancier
+ORDER BY gemeente, (SUM(hitcount)-average_hitcount) DESC

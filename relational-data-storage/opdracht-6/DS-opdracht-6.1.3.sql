@@ -1,0 +1,1 @@
+--6.1.3 Selecteer alle rubrieknamen en het aantal leveranciers in die rubriek.

@@ -39,7 +39,7 @@ ORDER BY name
 -- Poging 3
 
 --We beginnen met de namen.
-SELECT IFNULL(r1.id, r2.id) id1, r2.id id2, CONCAT_WS('-', r1.name, r2.name) name
+SELECT r1.id id1, r2.id id2, CONCAT_WS('-', r1.name, r2.name) name
 FROM mhl_rubrieken r1
 RIGHT JOIN mhl_rubrieken r2
 ON r2.parent=r1.id

@@ -45,3 +45,7 @@ LEFT JOIN v_monthsofyear m
 ON m.id=h.month
 GROUP BY jaar, maand
 ORDER BY jaar DESC
+
+-- Alternatief op 'monthsofyear' view:
+-- Taal aanpassen
+-- SET lc_time_names = 'nl_NL';

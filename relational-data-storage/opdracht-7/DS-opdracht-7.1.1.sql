@@ -1,0 +1,2 @@
+--Modify the employees table and add some columns:
+--salary, date_hired and date_fired;\
